@@ -72,3 +72,27 @@ jobs:
           ETH_NODE_URI_FORK: ${{secrets.ETH_NODE_URI_FORK}}
       - name: Print gas report
         run: cat gas-report.txt
+  foundry-tests:
+    if: github.ref == 'refs/heads/main' || github.event.review.state == 'approved' || github.event.action == 'ready_for_review' || github.event.action == 'review_requested'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: yarn-
+      - run: yarn install --frozen-lockfile
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+      - name: Run Foundry tests
+        run: forge test -vvv
+        env:
+          ETH_NODE_URI_MAINNET: ${{secrets.ETH_NODE_URI_MAINNET}}
