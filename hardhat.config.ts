@@ -61,7 +61,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       accounts: accounts('mainnet'),
       live: false,
-      blockGasLimit: 125e5,
+      blockGasLimit: 150e5,
       initialBaseFeePerGas: 0,
       hardfork: 'london',
       forking: {
