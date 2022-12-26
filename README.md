@@ -29,7 +29,7 @@ Other Angle-related smart contracts can be found in the following repositories:
 
 - [Angle Core module contracts](https://github.com/AngleProtocol/angle-core)
 - [Angle Strategies](https://github.com/AngleProtocol/angle-strategies)
-- [Angle Borrowing module contracts](https://github.com/AngleProtocol/angle-borrow)
+- [Angle Borrowing module contracts](https://github.com/AngleProtocol/borrow-contracts)
 
 Otherwise, for more info about the protocol, check out [this portal](https://linktr.ee/angleprotocol) of resources.
 
