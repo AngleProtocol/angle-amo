@@ -8,11 +8,12 @@ import 'hardhat-spdx-license-identifier';
 import 'hardhat-docgen';
 import 'hardhat-deploy';
 import 'hardhat-abi-exporter';
+import '@nomicfoundation/hardhat-chai-matchers'; /** NEW FEATURE - https://hardhat.org/hardhat-chai-matchers/docs/reference#.revertedwithcustomerror */
+import '@nomicfoundation/hardhat-toolbox'; /** NEW FEATURE */
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-truffle5';
 import '@nomiclabs/hardhat-solhint';
 import '@openzeppelin/hardhat-upgrades';
-import 'solidity-coverage';
 import '@tenderly/hardhat-tenderly';
 import '@typechain/hardhat';
 
@@ -20,7 +21,7 @@ import { TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS } from 'hardhat/builtin-tasks/ta
 import { HardhatUserConfig, subtask } from 'hardhat/config';
 import yargs from 'yargs';
 
-import { accounts, nodeUrl } from './utils/network';
+import { accounts, nodeUrl, etherscanKey } from './utils/network';
 
 // Otherwise, ".sol" files from "test" are picked up during compilation and throw an error
 subtask(TASK_COMPILE_SOLIDITY_GET_SOURCE_PATHS).setAction(async (_, __, runSuper) => {
@@ -99,6 +100,11 @@ const config: HardhatUserConfig = {
       url: nodeUrl('polygon'),
       accounts: accounts('polygon'),
       gas: 'auto',
+      verify: {
+        etherscan: {
+          apiKey: etherscanKey('polygon'),
+        },
+      },
     },
     mainnet: {
       live: true,
@@ -107,11 +113,17 @@ const config: HardhatUserConfig = {
       gas: 'auto',
       gasMultiplier: 1.3,
       chainId: 1,
+      verify: {
+        etherscan: {
+          apiKey: etherscanKey('mainnet'),
+        },
+      },
     },
   },
   paths: {
     sources: './contracts',
     tests: './test',
+    cache: 'cache-hh',
   },
   namedAccounts: {
     deployer: 0,
@@ -135,20 +147,11 @@ const config: HardhatUserConfig = {
     overwrite: true,
     runOnCompile: false,
   },
-  docgen: {
-    path: './docs',
-    clear: true,
-    runOnCompile: false,
-  },
   abiExporter: {
     path: './export/abi',
     clear: true,
     flat: true,
     spacing: 2,
-  },
-  tenderly: {
-    project: process.env.TENDERLY_PROJECT || '',
-    username: process.env.TENDERLY_USERNAME || '',
   },
   typechain: {
     outDir: 'typechain',
