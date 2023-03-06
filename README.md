@@ -6,18 +6,17 @@
 
 ## Documentation
 
-Algorithmic market operations (or AMOs) are operations performed by contracts to mint or burn stablecoins without collateral immediately backing these stablecoins. The idea is that stablecoins minted by AMOs are still controlled by the protocol, and if other people start controlling these stablecoins, then this new supply should be properly backed in one way or another.
-AMOs are thought not to affect the peg of the stablecoin.
+[Algorithmic market operations (or AMOs)](https://docs.angle.money/stablecoins-side-modules/amo), also referred to as direct deposit modules, are operations performed by contracts to mint or burn stablecoins without collateral immediately backing these stablecoins. Stablecoins minted by AMOs are still controlled by the protocol, and if other people start controlling these stablecoins, then this new supply should be properly backed in one way or another.
 
-We dedicated this repository to track all operations and keep an accountability book on all AMO made by the protocol.
-
-The first deployed AMO is on the Curve pool agEUR-EUROC, and staking on both Stake DAO and Convex.
+AMOs are conceived not to affect the peg of the stablecoin.
 
 ### To Start With
 
 Angle is a decentralized stablecoin protocol, designed to be both over-collateralized and capital-efficient. For more information about the protocol, you can refer to [Angle Documentation](https://docs.angle.money).
 
 The protocol is made of different modules, each with their own set of smart contracts. This repo contains the smart contracts for the Algorithmic Market Operations (AMOs) of the protocol that allow the protocol to mint stablecoins in some specific places in DeFi.
+
+The first AMO deployed is on the Curve pool agEUR-EUROC. LP tokens from this AMO are staked on both Stake DAO and Convex.
 
 Documentation to understand Angle Protocol's AMOs is available [here](https://docs.angle.money/other-aspects/amo).
 

@@ -6,6 +6,7 @@ out/
 # Build output
 cache
 cache-forge
+cache-hh
 build
 export
 **/artifacts

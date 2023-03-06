@@ -39,6 +39,16 @@ export function getMnemonic(networkName: string): string {
   return mnemonic;
 }
 
+export function etherscanKey(networkName: string): string {
+  if (networkName) {
+    const key = process.env[networkName.toUpperCase() + '_ETHERSCAN_API_KEY'];
+    if (key && key !== '') {
+      return key;
+    }
+  }
+  return '';
+}
+
 export function accounts(networkName: string): { mnemonic: string; count: number } {
   return { mnemonic: getMnemonic(networkName), count: 20 };
 }
