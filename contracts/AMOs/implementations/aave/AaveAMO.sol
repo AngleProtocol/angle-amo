@@ -102,8 +102,11 @@ contract AaveAMO is BaseAMO {
     /// @dev Anyone can call this function even on tokens which have not been set: if called on a token
     /// which has not been set, it will populate the mapping without another impact on the AMO
     function setAaveTokenLiqThreshold(IERC20[] memory tokens) external {
-        for (uint256 i = 0; i < tokens.length; i++) {
+        for (uint256 i; i < tokens.length;) {
             _setAaveTokenLiqThreshold(tokens[i]);
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -199,11 +202,14 @@ contract AaveAMO is BaseAMO {
         // Deletion from `activeTokenList` loop
         IERC20[] memory tmpActiveTokenList = activeTokenList;
         uint256 amoTokensLength = tmpActiveTokenList.length;
-        for (uint256 i = 0; i < amoTokensLength - 1; i++) {
+        for (uint256 i; i < amoTokensLength - 1;) {
             if (tmpActiveTokenList[i] == token) {
                 // Replace the `amo` to remove with the last of the list
                 activeTokenList[i] = activeTokenList[amoTokensLength - 1];
                 break;
+            }
+            unchecked {
+                ++i;
             }
         }
         // Remove last element in array
@@ -221,12 +227,15 @@ contract AaveAMO is BaseAMO {
         uint256[] memory amounts,
         bytes[] memory
     ) internal override {
-        for (uint256 i = 0; i < tokens.length; i++) {
+        for (uint256 i; i < tokens.length;) {
             IERC20 token = tokens[i];
             uint256 amount = amounts[i];
             (uint256 netTokens, uint256 idleTokens) = _report(token, amount);
             lastBalances[token] = netTokens + idleTokens;
             FlashMintLib.LENDING_POOL.deposit(address(token), amount, address(this), 0);
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -242,7 +251,7 @@ contract AaveAMO is BaseAMO {
         uint256[] memory amounts,
         bytes[] memory
     ) internal override returns (uint256[] memory) {
-        for (uint256 i = 0; i < tokens.length; i++) {
+        for (uint256 i; i < tokens.length;) {
             IERC20 token = tokens[i];
             uint256 amount = amounts[i];
             (uint256 netAssets, uint256 idleTokens) = _report(token, 0);
@@ -263,6 +272,9 @@ contract AaveAMO is BaseAMO {
             } else {
                 amounts[i] = idleTokens;
                 lastBalances[token] = netAssets + idleTokens - amount;
+            }
+            unchecked {
+                ++i;
             }
         }
         // Checking if we're not too close to liquidation
@@ -326,10 +338,13 @@ contract AaveAMO is BaseAMO {
     /// @notice Get the deposit and debt tokens for a given token
     function _getAaveAssets(IERC20[] memory tokens) internal view returns (address[] memory assets) {
         assets = new address[](2 * tokens.length);
-        for (uint256 i = 0; i < tokens.length; i++) {
+        for (uint256 i; i < tokens.length;) {
             AaveTokenParams memory aaveAddresses = tokensParams[tokens[i]];
             assets[i * 2] = address(aaveAddresses.aToken);
             assets[i * 2 + 1] = address(aaveAddresses.debtToken);
+            unchecked {
+                ++i;
+            }
         }
     }
 
